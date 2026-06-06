@@ -1,0 +1,104 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum CollegeType {
+  Government
+  Private
+  Deemed
+}
+
+enum CollegeCategory {
+  Engineering
+  Medical
+  Management
+  Law
+  Arts
+}
+
+enum Exam {
+  JEE_MAIN
+  JEE_ADV
+  NEET
+  CAT
+  CLAT
+  CUET
+}
+
+model College {
+  id                     String          @id @default(cuid())
+  name                   String
+  slug                   String          @unique
+  location               String
+  state                  String
+  type                   CollegeType
+  category               CollegeCategory
+  fees                   Int
+  rating                 Float
+  established            Int
+  imageUrl               String?
+  overview               String
+  website                String?
+  naacGrade              String?
+  nirfRank               Int?
+  placementAvgSalary     Int?
+  placementHighestSalary Int?
+  placementPercent       Float?
+  courses                Course[]
+  reviews                Review[]
+  cutoffs                Cutoff[]
+  savedByUsers           User[]   @relation("UserSavedColleges")
+
+  @@index([state])
+  @@index([type])
+  @@index([category])
+  @@index([nirfRank])
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String
+  email         String    @unique
+  password      String
+  role          String    @default("user")
+  savedColleges College[] @relation("UserSavedColleges")
+  createdAt     DateTime  @default(now())
+}
+
+model Course {
+  id        String  @id @default(cuid())
+  name      String
+  duration  String
+  fees      Int
+  seats     Int
+  college   College @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+  collegeId String
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  author    String
+  rating    Float
+  content   String
+  batch     Int
+  college   College  @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+  collegeId String
+  createdAt DateTime @default(now())
+}
+
+model Cutoff {
+  id        String  @id @default(cuid())
+  exam      Exam
+  category  String
+  rankFrom  Int
+  rankTo    Int
+  college   College @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+  collegeId String
+}
