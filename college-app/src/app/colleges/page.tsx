@@ -39,7 +39,7 @@ export default function CollegesPage() {
       if (search) params.append('q', search);
       if (category) params.append('category', category);
       
-      const res = await axios.get(`http://localhost:5000/api/colleges?${params.toString()}`);
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/colleges?${params.toString()}`);
       setColleges(res.data.colleges);
     } catch (error) {
       console.error('Error fetching colleges:', error);

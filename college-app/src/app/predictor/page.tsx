@@ -30,7 +30,7 @@ export default function PredictorPage() {
     setHasSearched(true);
     
     try {
-      const res = await axios.post('http://localhost:5000/api/predictor', {
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/predictor`, {
         exam,
         rank: parseInt(rank),
         category

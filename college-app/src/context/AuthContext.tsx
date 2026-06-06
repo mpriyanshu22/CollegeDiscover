@@ -37,7 +37,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const checkAuth = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/auth/me');
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/auth/me`);
       setUser(res.data.user);
     } catch (error) {
       setUser(null);
@@ -47,19 +47,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const login = async (data: any) => {
-    const res = await axios.post('http://localhost:5000/api/auth/login', data);
+    const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/auth/login`, data);
     setUser(res.data.user);
     router.push('/');
   };
 
   const register = async (data: any) => {
-    const res = await axios.post('http://localhost:5000/api/auth/register', data);
+    const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/auth/register`, data);
     setUser(res.data.user);
     router.push('/');
   };
 
   const logout = async () => {
-    await axios.post('http://localhost:5000/api/auth/logout');
+    await axios.post(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/auth/logout`);
     setUser(null);
     router.push('/login');
   };
@@ -73,10 +73,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       const isSaved = user.savedColleges.includes(collegeId);
       if (isSaved) {
-        const res = await axios.delete(`http://localhost:5000/api/user/save-college/${collegeId}`);
+        const res = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/user/save-college/${collegeId}`);
         setUser({ ...user, savedColleges: res.data.savedColleges });
       } else {
-        const res = await axios.post('http://localhost:5000/api/user/save-college', { collegeId });
+        const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/user/save-college`, { collegeId });
         setUser({ ...user, savedColleges: res.data.savedColleges });
       }
     } catch (error) {

@@ -23,7 +23,7 @@ export default function ComparePage() {
       return;
     }
     setLoading(true);
-    axios.get(`http://localhost:5000/api/compare?ids=${compareIds.join(',')}`)
+    axios.get(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/compare?ids=${compareIds.join(',')}`)
       .then(res => {
         setColleges(res.data.colleges);
         setLoading(false);

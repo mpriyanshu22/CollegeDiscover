@@ -31,7 +31,7 @@ export default function SavedCollegesPage() {
 
   const fetchSavedColleges = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/user/saved-colleges');
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/user/saved-colleges`);
       setSavedColleges(res.data.savedColleges);
     } catch (error) {
       console.error('Error fetching saved colleges:', error);

@@ -44,7 +44,7 @@ export default function CollegeDetailPage() {
 
   useEffect(() => {
     if (params.id) {
-      axios.get(`http://localhost:5000/api/colleges/${params.id}`)
+      axios.get(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/colleges/${params.id}`)
         .then(res => {
           setCollege(res.data);
           setLoading(false);
